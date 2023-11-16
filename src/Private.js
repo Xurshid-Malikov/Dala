@@ -1,7 +1,7 @@
 function Private() {
   return (
     <div>
-     Hello guys
+     Hello Xasan
     </div>
   );
 }
