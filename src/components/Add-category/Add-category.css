@@ -1,0 +1,112 @@
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  list-style: none;
+}
+
+.card-title {
+  text-align: center;
+}
+
+.card-item {
+  width: 307px;
+  height: 160px;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1px solid rgba(37, 182, 121, 1);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-left: 11px;
+  margin-bottom: 11px;
+}
+
+.card-btn {
+  border: none;
+  font-size: medium;
+  background-color: transparent;
+  position: absolute;
+  font-size: 30px;
+  cursor: pointer;
+  transform: translateY(-60px);
+  right: 5px;
+}
+
+.react-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-modal-content {
+  position: relative;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  max-width: 600px;
+  width: 100%;
+  outline: none;
+}
+
+.modal-form {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.modal-title {
+  text-align: center;
+}
+
+.modal-btn {
+  width: 40px;
+  height: 40px;
+  padding: 13px;
+  border-radius: 8px;
+  gap: 10px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  background-color: rgba(37, 182, 121, 1);
+}
+
+.close-btn {
+  border: none;
+  width: 24px;
+  height: 24px;
+  border: 3px;
+  color: rgba(107, 107, 107, 1);
+}
+
+.edit-delete-buttons {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgba(250, 250, 250, 1);
+  box-shadow: 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+  margin-top: 10px;
+}
+
+.button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
