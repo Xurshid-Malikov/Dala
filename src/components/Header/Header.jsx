@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import "./Header.css";
 import Logo from "../../Assets/img/Logo.svg";
@@ -13,15 +13,25 @@ const Header = () => {
     role: "",
   });
 
+  useEffect(() => {
+    // Load data from local storage on component mount
+    const storedAdminData = localStorage.getItem("adminData");
+    if (storedAdminData) {
+      setAdminData(JSON.parse(storedAdminData));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("adminData", JSON.stringify(adminData));
+  }, [adminData]);
+
   const handleButtonClick = (btnName) => {
     setActiveBtn(btnName);
   };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    // Add the new admin to the adminData state
     setAdminData((prevAdminData) => [...prevAdminData, newAdmin]);
-    // Reset the form inputs
     setNewAdmin({
       fullName: "",
       phoneNumber: "",
@@ -80,7 +90,12 @@ const Header = () => {
 
           <Modal isOpen={isModalOpen} onRequestClose={closeModal}>
             <div className="modal-content">
-              <h2>Admin qo’shish</h2>
+              <div className="modal-header">
+                <h2 className="modal-title">Admin qo’shish</h2>
+                <button className="close-btn" onClick={closeModal}>
+                  X
+                </button>
+              </div>
               <form className="modal-form" onSubmit={handleFormSubmit}>
                 <label htmlFor="adminName">Full name</label>
                 <input
@@ -117,7 +132,6 @@ const Header = () => {
                 />
                 <button type="submit">Saqlash</button>
               </form>
-              <button onClick={closeModal}>Close Modal</button>
             </div>
           </Modal>
 

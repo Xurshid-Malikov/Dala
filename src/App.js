@@ -1,12 +1,16 @@
 import './App.css';
-import Header from './components/Header/Header';
-import Private from './Private';
+import News from './components/News/News';
+// import Addcategory from './components/Add-category/Add-category';
+// import Header from './components/Header/Header';
+// import Private from './Private';
 
 function App() {
   return (
     <div className="App">
-     <Header/>
-     <Private/>
+     {/* <Header/> */}
+     {/* <Addcategory/> */}
+     <News/>
+     {/* <Private/> */}
     </div>
   );
 }
