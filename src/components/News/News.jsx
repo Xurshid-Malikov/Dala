@@ -4,9 +4,22 @@
 
 // const News = () => {
 //   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [fullName, setFullName] = useState("");
+//   const [comment, setComment] = useState("");
+//   const [newsItems, setNewsItems] = useState([]);
 
 //   const handleFormSubmit = (event) => {
 //     event.preventDefault();
+//     const newNewsItem = {
+//       fullName: fullName,
+//       comment: comment,
+//     };
+
+//     setNewsItems((prevNewsItems) => [...prevNewsItems, newNewsItem]);
+
+//     setFullName("");
+//     setComment("");
+
 //     closeModal();
 //   };
 
@@ -19,7 +32,7 @@
 //   };
 
 //   return (
-//     <div className="contianer">
+//     <div className="container">
 //       <div className="box">
 //         <h1 className="news-title">Yangiliklar</h1>
 //         <button className="modal-btn" onClick={openModal}>
@@ -38,44 +51,36 @@
 //           <form className="modal-form" onSubmit={handleFormSubmit}>
 //             <label htmlFor="adminName">Full name</label>
 //             <input
+//               className="adminName"
 //               type="text"
 //               id="adminName"
 //               name="fullName"
 //               autoComplete="off"
+//               value={fullName}
+//               onChange={(e) => setFullName(e.target.value)}
 //             />
 //             <label htmlFor="Comment">Comment</label>
 //             <textarea
+//             className="comment"
 //               type="text"
 //               id="Comment"
-//               name="Comment"
+//               name="comment"
 //               autoComplete="off"
+//               value={comment}
+//               onChange={(e) => setComment(e.target.value)}
 //             />
-
-//             <button type="submit">Saqlash</button>
+//             <button className="save-btn" type="submit">Saqlash</button>
 //           </form>
 //         </div>
 //       </Modal>
 
 //       <ul className="news-list">
-//         <li className="news-item">
-//         <h2 className="new-title">
-//           Qishloq xo'jaligi haqida qisqacha ma'lumot
-//         </h2>
-//         <p className="new-title">
-//           Qishloq qishloq xo'jaligi don, meva, sabzavot va moyli o'simliklar
-//           kabi ekinlarni etishtirishni o'z ichiga oladi. Fermerlar odatda
-//           mavsumiy tsikllarga rioya qilishadi va hosilni optimallashtirish uchun
-//           turli dehqonchilik usullaridan foydalanadilar. Ko'pgina qishloq
-//           joylarda chorvachilik fermalari joylashgan bo'lib, u erda go'sht, sut,
-//           tuxum va boshqa mahsulotlar uchun qoramol, qo'y, cho'chqa va
-//           parrandalar boqiladi. Chorvachilik qishloq xoʻjaligi iqtisodiyotiga
-//           salmoqli hissa qoʻshmoqda. Dehqonchilik texnikasi: An’anaviy
-//           dehqonchilik usullari hali ham ko‘plab qishloq joylarda keng
-//           tarqalgan, biroq hosildorlik va barqarorlikni oshirish uchun zamonaviy
-//           texnikalar, jumladan, mexanizatsiyalash, aniq dehqonchilik va ilg‘or
-//           texnologiyalardan foydalanish tobora ko‘proq o‘zlashtirilmoqda.
-//         </p>
-//         </li>
+//         {newsItems.map((newsItem, index) => (
+//           <li className="news-item" key={index}>
+//             <h2 className="new-title">{newsItem.fullName}</h2>
+//             <p className="news-content">{newsItem.comment}</p>
+//           </li>
+//         ))}
 //       </ul>
 //     </div>
 //   );
@@ -92,24 +97,27 @@ const News = () => {
   const [fullName, setFullName] = useState("");
   const [comment, setComment] = useState("");
   const [newsItems, setNewsItems] = useState([]);
+  const [formError, setFormError] = useState("");
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    // Create a new news item using the input values
+    if (!fullName.trim() || !comment.trim()) {
+      setFormError("Iltimos, barcha Malumot toʻldiring");
+      return;
+    }
+
     const newNewsItem = {
       fullName: fullName,
       comment: comment,
     };
 
-    // Add the new news item to the list
     setNewsItems((prevNewsItems) => [...prevNewsItems, newNewsItem]);
 
-    // Clear the input values
     setFullName("");
     setComment("");
+    setFormError("");
 
-    // Close the modal
     closeModal();
   };
 
@@ -119,6 +127,7 @@ const News = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setFormError("");
   };
 
   return (
@@ -141,6 +150,7 @@ const News = () => {
           <form className="modal-form" onSubmit={handleFormSubmit}>
             <label htmlFor="adminName">Full name</label>
             <input
+              className="adminName"
               type="text"
               id="adminName"
               name="fullName"
@@ -150,6 +160,7 @@ const News = () => {
             />
             <label htmlFor="Comment">Comment</label>
             <textarea
+              className="comment"
               type="text"
               id="Comment"
               name="comment"
@@ -157,7 +168,10 @@ const News = () => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
-            <button type="submit">Saqlash</button>
+            {formError && <p className="form-error">{formError}</p>}
+            <button className="save-btn" type="submit">
+              Saqlash
+            </button>
           </form>
         </div>
       </Modal>
@@ -165,7 +179,7 @@ const News = () => {
       <ul className="news-list">
         {newsItems.map((newsItem, index) => (
           <li className="news-item" key={index}>
-            <h2 className="news-title">{newsItem.fullName}</h2>
+            <h2 className="new-title">{newsItem.fullName}</h2>
             <p className="news-content">{newsItem.comment}</p>
           </li>
         ))}

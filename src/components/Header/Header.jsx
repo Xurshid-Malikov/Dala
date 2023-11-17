@@ -13,8 +13,10 @@ const Header = () => {
     role: "",
   });
 
+  // Add the following state declaration
+  const [selectedAdmin, setSelectedAdmin] = useState(null);
+
   useEffect(() => {
-    // Load data from local storage on component mount
     const storedAdminData = localStorage.getItem("adminData");
     if (storedAdminData) {
       setAdminData(JSON.parse(storedAdminData));
@@ -31,12 +33,30 @@ const Header = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    setAdminData((prevAdminData) => [...prevAdminData, newAdmin]);
+
+    if (!newAdmin.fullName || !newAdmin.phoneNumber || !newAdmin.role) {
+      alert("Iltimos, barcha Malumot toʻldiring");
+      return;
+    }
+
+    // Update the selected admin if it exists, else add a new admin
+    if (selectedAdmin !== null) {
+      setAdminData((prevAdminData) =>
+        prevAdminData.map((admin, index) =>
+          index === selectedAdmin ? newAdmin : admin
+        )
+      );
+      setSelectedAdmin(null);
+    } else {
+      setAdminData((prevAdminData) => [...prevAdminData, newAdmin]);
+    }
+
     setNewAdmin({
       fullName: "",
       phoneNumber: "",
       role: "",
     });
+
     closeModal();
   };
 
@@ -46,6 +66,26 @@ const Header = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleEditClick = (index) => {
+    const adminToEdit = adminData[index];
+
+    // Populate the form with the data of the admin to be edited
+    setNewAdmin(adminToEdit);
+    setSelectedAdmin(index);
+
+    openModal();
+  };
+
+  const handleDeleteClick = (index) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this admin?");
+
+    if (confirmDelete) {
+      setAdminData((prevAdminData) =>
+        prevAdminData.filter((_, i) => i !== index)
+      );
+    }
   };
 
   return (
@@ -95,13 +135,14 @@ const Header = () => {
                 <button className="close-btn" onClick={closeModal}>
                   X
                 </button>
-              </div>
               <form className="modal-form" onSubmit={handleFormSubmit}>
                 <label htmlFor="adminName">Full name</label>
                 <input
                   type="text"
+                  className="input-name"
                   id="adminName"
                   name="fullName"
+                  placeholder="Full name"
                   autoComplete="off"
                   value={newAdmin.fullName}
                   onChange={(e) =>
@@ -110,28 +151,44 @@ const Header = () => {
                 />
                 <label htmlFor="phoneNumber">Phone number</label>
                 <input
-                  type="text"
+                  className="phoneNumber"
+                  type="tel"
                   id="phoneNumber"
                   name="phoneNumber"
                   autoComplete="off"
+                  placeholder="+998"
                   value={newAdmin.phoneNumber}
-                  onChange={(e) =>
-                    setNewAdmin({ ...newAdmin, phoneNumber: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const formattedPhoneNumber = e.target.value
+                      .replace(/\D/g, "")
+                      .replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+
+                    setNewAdmin({
+                      ...newAdmin,
+                      phoneNumber: formattedPhoneNumber,
+                    });
+                  }}
                 />
+
                 <label htmlFor="role">Role</label>
                 <input
+                  className="role"
                   type="text"
                   id="role"
                   name="role"
                   autoComplete="off"
                   value={newAdmin.role}
+                  placeholder="Role"
                   onChange={(e) =>
                     setNewAdmin({ ...newAdmin, role: e.target.value })
                   }
                 />
-                <button type="submit">Saqlash</button>
+                <button className="save-btn" type="submit">
+                  Saqlash
+                </button>
               </form>
+              </div>
+              
             </div>
           </Modal>
 
@@ -145,14 +202,20 @@ const Header = () => {
               </tr>
             </thead>
             <tbody>
-              {adminData.map((admin, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{admin.fullName}</td>
-                  <td>{admin.phoneNumber}</td>
-                  <td>{admin.role}</td>
-                </tr>
-              ))}
+            {adminData.map((admin, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{admin.fullName}</td>
+              <td>{admin.phoneNumber}</td>
+              <td>{admin.role}</td>
+              <button>...</button>
+              <td>
+                <button onClick={() => handleEditClick(index)}>Edit</button>
+                <button onClick={() => handleDeleteClick(index)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+
             </tbody>
           </table>
         </div>

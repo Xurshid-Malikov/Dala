@@ -77,6 +77,7 @@
 //           <form className="modal-form" onSubmit={handleFormSubmit}>
 //             <label htmlFor="category">Kategoriya nomi</label>
 //             <input
+//             className="category-input"
 //               type="text"
 //               id="category"
 //               name="category"
@@ -85,7 +86,7 @@
 //               value={newCategory}
 //               onChange={(e) => setNewCategory(e.target.value)}
 //             />
-//             <button type="submit">Saqlash</button>
+//             <button className="save-btn" type="submit">Saqlash</button>
 //           </form>
 //         </div>
 //       </Modal>
@@ -123,7 +124,7 @@ const Addcategory = () => {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [editMode, setEditMode] = useState(false); // New state for toggle
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     const storedCategories = localStorage.getItem("categories");
@@ -139,7 +140,13 @@ const Addcategory = () => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    if (editMode && selectedCategory !== null) {
+    // Check if the form is empty
+    if (!newCategory.trim()) {
+      setFormError("Kategoriya nomini kiriting");
+      return;
+    }
+
+    if (selectedCategory !== null) {
       setCategories((prevCategories) =>
         prevCategories.map((category, index) =>
           index === selectedCategory ? newCategory : category
@@ -151,13 +158,13 @@ const Addcategory = () => {
     }
 
     setNewCategory("");
+    setFormError("");
     closeModal();
   };
 
   const handleEditClick = (index) => {
     setNewCategory(categories[index]);
     setSelectedCategory(index);
-    setEditMode(true);
     openModal();
   };
 
@@ -167,10 +174,6 @@ const Addcategory = () => {
     );
   };
 
-  const handleToggle = () => {
-    setEditMode(!editMode);
-  };
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -178,7 +181,7 @@ const Addcategory = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedCategory(null);
-    setEditMode(false);
+    setFormError("");
   };
 
   return (
@@ -193,7 +196,7 @@ const Addcategory = () => {
       <Modal isOpen={isModalOpen} onRequestClose={closeModal}>
         <div className="modal-content">
           <div className="modal-header">
-            <h2 className="modal-title">Admin qo’shish</h2>
+            <h2 className="modal-title">Kategoriya qo’shish</h2>
             <button className="close-btn" onClick={closeModal}>
               X
             </button>
@@ -201,6 +204,7 @@ const Addcategory = () => {
           <form className="modal-form" onSubmit={handleFormSubmit}>
             <label htmlFor="category">Kategoriya nomi</label>
             <input
+              className="category-input"
               type="text"
               id="category"
               name="category"
@@ -209,7 +213,10 @@ const Addcategory = () => {
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
             />
-            <button type="submit">Saqlash</button>
+            {formError && <p className="form-error">{formError}</p>}
+            <button className="save-btn" type="submit">
+              Saqlash
+            </button>
           </form>
         </div>
       </Modal>
@@ -217,21 +224,28 @@ const Addcategory = () => {
         {categories.map((category, index) => (
           <li className="card-item" key={index}>
             <a href="/News">{category}</a>
-            <div className="edit-delete-buttons">
-             
-                <button className="button" onClick={() => handleEditClick(index)}>
+            <button
+              className="card-btn"
+              onClick={() => setSelectedCategory(index)}
+            >
+              ...
+            </button>
+            {selectedCategory === index && (
+              <div className="edit-delete-buttons">
+                <button
+                  className="button"
+                  onClick={() => handleEditClick(index)}
+                >
                   Edit
                 </button>
-             
-              <button className="button" onClick={() => handleDeleteClick(index)}>
-                Delete
-              </button>
-              <label className="switch">
-                <input type="checkbox" onChange={handleToggle} />
-                <span className="slider round"></span>
-              </label>
-              {editMode && <span>Active </span>}
-            </div>
+                <button
+                  className="button"
+                  onClick={() => handleDeleteClick(index)}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </li>
         ))}
       </ul>
