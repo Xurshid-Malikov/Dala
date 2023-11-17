@@ -149,7 +149,7 @@ const Addcategory = () => {
     <div className="container">
       <h2 className="card-title">Kategoriya qo’shish</h2>
       <div className="box">
-        <h1 className="header-title">Admin qo’shish</h1>
+        <h1 className="header-title">Kategoriya qo’shish</h1>
         <button className="modal-btn" onClick={openModal}>
           +
         </button>
@@ -180,7 +180,8 @@ const Addcategory = () => {
       <ul className="card-list">
         {categories.map((category, index) => (
           <li className="card-item" key={index}>
-            {category}
+            <a href="/page">{category}</a>
+            {/* {category} */}
             <button
               className="card-btn"
               onClick={() => setSelectedCategory(index)}
