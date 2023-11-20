@@ -6,6 +6,7 @@
 
 .banner-inner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 
@@ -23,7 +24,7 @@
   padding: 0;
 }
 
-.box {
+.boxes {
   width: 635px;
   height: 380px;
   margin: 10px;
@@ -44,4 +45,12 @@
 .add-image {
     object-fit: cover;
     margin-top: 68px;
+}
+
+.banner-header {
+  display: flex;
+}
+
+.banner-title {
+  text-align: center;
 }

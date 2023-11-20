@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Shablon from "../../Assets/img/shablon.png";
+import Nav from "../Nav/Nav";
 import "./Banner.css";
 
 const Banner = () => {
@@ -16,7 +17,9 @@ const Banner = () => {
 
   return (
     <div className="container">
-      <h2>Banner</h2>
+      <Nav />
+      <h2 className="banner-title">Banner</h2>
+
       <div className="banner-wrapper">
         <div className="banner-inner">
           <input
@@ -26,7 +29,7 @@ const Banner = () => {
             onChange={handleFileChange}
             style={{ display: "none" }} // Hide the file input
           />
-          <div className="box">
+          <div className="boxes">
             <h3>Rasm Yuklash</h3>
             <button className="btn-file" onClick={handleUploadClick}>
               <img className="Shablon" src={Shablon} alt="" />
